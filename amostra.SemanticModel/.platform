@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "amostra"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5de16b8e-ddef-4e8e-a8f1-ea70cdf0aade"
+  }
+}
