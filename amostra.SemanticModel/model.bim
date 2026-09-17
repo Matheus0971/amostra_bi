@@ -4,7 +4,7 @@
     "annotations": [
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"amostra_evg\",\"F_matricula\",\"Dim_turma\",\"Dim_curso\",\"Dim_pessoa\",\"Dim_poder\",\"Dim_esfera\",\"Dim_localidade\",\"Dcalendar\"]"
+        "value": "[\"amostra_evg\",\"F_matricula\",\"Dim_turma\",\"Dim_curso\",\"Dim_pessoa\",\"Dcalendar\",\"Dim_poder\",\"Dim_localidade\",\"Dim_esfera\"]"
       },
       {
         "name": "__PBI_TimeIntelligenceEnabled",
@@ -71,36 +71,34 @@
         "toTable": "LocalDateTable_6b7251f7-6662-49c8-b1a3-9d7213045187"
       },
       {
-        "name": "a7e73bcb-0777-43e0-9805-e3fd9cbeed60",
-        "fromColumn": "dt_fim",
-        "fromTable": "F_matricula",
-        "joinOnDateBehavior": "datePartOnly",
-        "toColumn": "Date",
-        "toTable": "LocalDateTable_b3816c51-0a65-40e0-a5c6-5dc2be8a9148"
+        "name": "0ab2af2c-691b-3875-6783-781abccc70bc",
+        "crossFilteringBehavior": "bothDirections",
+        "fromColumn": "Cod_esfera",
+        "fromTable": "Dim_esfera",
+        "toCardinality": "many",
+        "toColumn": "Cod_esfera",
+        "toTable": "F_matricula"
       },
       {
-        "name": "AutoDetected_b65eddec-631e-4463-816b-7214c3b2ef43",
-        "fromColumn": "cod_poder",
-        "fromTable": "F_matricula",
-        "toColumn": "cod_poder",
-        "toTable": "Dim_poder"
-      },
-      {
-        "name": "AutoDetected_3f0c55c5-8326-4b6b-9a89-e1304aa9b628",
-        "fromColumn": "cod_esfera",
-        "fromTable": "F_matricula",
-        "toColumn": "cod_esfera",
-        "toTable": "Dim_esfera"
-      },
-      {
-        "name": "AutoDetected_d615816a-9ad7-4534-aa66-d0c6874b5cbd",
+        "name": "eebfb2b4-400d-fef9-d6f3-d18150477a54",
+        "crossFilteringBehavior": "bothDirections",
         "fromColumn": "Cod_localidade",
-        "fromTable": "F_matricula",
+        "fromTable": "Dim_localidade",
+        "toCardinality": "many",
         "toColumn": "Cod_localidade",
-        "toTable": "Dim_localidade"
+        "toTable": "F_matricula"
       },
       {
-        "name": "00ec0908-13f9-b167-e639-0673b8921c8c",
+        "name": "31dea11c-d224-6bf8-5ad5-e9e3565b6767",
+        "crossFilteringBehavior": "bothDirections",
+        "fromColumn": "cod_turma",
+        "fromTable": "Dim_turma",
+        "toCardinality": "many",
+        "toColumn": "cod_turma",
+        "toTable": "F_matricula"
+      },
+      {
+        "name": "febf4363-f246-1335-c1a9-12364d69ebbd",
         "crossFilteringBehavior": "bothDirections",
         "fromColumn": "codigo_pessoa",
         "fromTable": "Dim_pessoa",
@@ -109,13 +107,29 @@
         "toTable": "F_matricula"
       },
       {
-        "name": "01a63b42-692c-e7e1-aff5-cce15ca247d0",
+        "name": "d1ea67b2-a220-a055-1f82-c4bc7c89dff3",
         "crossFilteringBehavior": "bothDirections",
-        "fromColumn": "cod_turma",
-        "fromTable": "Dim_turma",
+        "fromColumn": "Cod_poder",
+        "fromTable": "Dim_poder",
         "toCardinality": "many",
-        "toColumn": "cod_turma",
+        "toColumn": "Cod_poder",
         "toTable": "F_matricula"
+      },
+      {
+        "name": "1ff7e733-438f-236e-58f2-530af9e66fd8",
+        "crossFilteringBehavior": "bothDirections",
+        "fromColumn": "cod_curso",
+        "fromTable": "Dim_curso",
+        "toCardinality": "many",
+        "toColumn": "cod_curso",
+        "toTable": "F_matricula"
+      },
+      {
+        "name": "d95a23ab-0a66-525b-b993-2fac41b99e70",
+        "fromColumn": "dt_fim",
+        "fromTable": "F_matricula",
+        "toColumn": "data",
+        "toTable": "Dcalendar"
       }
     ],
     "sourceQueryCulture": "pt-BR",
@@ -1633,7 +1647,7 @@
             "formatString": "0",
             "lineageTag": "40934d0d-a95e-45f5-bcd1-e7776fe48083",
             "sourceColumn": "cod_curso",
-            "summarizeBy": "sum"
+            "summarizeBy": "none"
           },
           {
             "name": "nome_curso",
@@ -1828,6 +1842,14 @@
           }
         ],
         "lineageTag": "486ab2d3-c52e-44b9-ba83-14e18e67a47b",
+        "measures": [
+          {
+            "name": "Pessoas",
+            "expression": "COUNTROWS('Dim_pessoa')",
+            "formatString": "0",
+            "lineageTag": "4fcada21-a74c-420b-8146-7e534f6240e0"
+          }
+        ],
         "partitions": [
           {
             "name": "Dim_pessoa",
@@ -1839,208 +1861,6 @@
                 "    #\"Outras Colunas Removidas\" = Table.SelectColumns(Fonte,{\"codigo_pessoa\", \"sexo\", \"idade\", \"email_pessoa\", \"telefone_pessoa\", \"instituicao\", \"nacionalidade\"})",
                 "in",
                 "    #\"Outras Colunas Removidas\""
-              ],
-              "type": "m"
-            }
-          }
-        ]
-      },
-      {
-        "name": "Dim_poder",
-        "annotations": [
-          {
-            "name": "PBI_NavigationStepName",
-            "value": "Navegação"
-          },
-          {
-            "name": "PBI_ResultType",
-            "value": "Table"
-          }
-        ],
-        "columns": [
-          {
-            "name": "poder",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "779760d1-553c-435d-a992-2e8042301579",
-            "sourceColumn": "poder",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "cod_poder",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "int64",
-            "formatString": "0",
-            "lineageTag": "70a655e7-35ed-4ea3-900a-458059cf110d",
-            "sourceColumn": "cod_poder",
-            "summarizeBy": "none"
-          }
-        ],
-        "lineageTag": "b6e0b8f3-4209-4a99-bff4-f8fee4f9d98f",
-        "partitions": [
-          {
-            "name": "Dim_poder",
-            "mode": "import",
-            "source": {
-              "expression": [
-                "let",
-                "    Fonte = amostra_evg,",
-                "    #\"Outras Colunas Removidas\" = Table.SelectColumns(Fonte,{\"poder\"}),",
-                "    #\"Duplicatas Removidas\" = Table.Distinct(#\"Outras Colunas Removidas\"),",
-                "    #\"Linhas Filtradas\" = Table.SelectRows(#\"Duplicatas Removidas\", each ([poder] <> \"\")),",
-                "    #\"Índice Adicionado\" = Table.AddIndexColumn(#\"Linhas Filtradas\", \"Índice\", 30, 3, Int64.Type),",
-                "    #\"Colunas Renomeadas\" = Table.RenameColumns(#\"Índice Adicionado\",{{\"Índice\", \"cod_poder\"}})",
-                "in",
-                "    #\"Colunas Renomeadas\""
-              ],
-              "type": "m"
-            }
-          }
-        ]
-      },
-      {
-        "name": "Dim_esfera",
-        "annotations": [
-          {
-            "name": "PBI_NavigationStepName",
-            "value": "Navegação"
-          },
-          {
-            "name": "PBI_ResultType",
-            "value": "Table"
-          }
-        ],
-        "columns": [
-          {
-            "name": "esfera",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "7c9392b7-3db7-4a3f-a8a2-4baeeb0b5e19",
-            "sourceColumn": "esfera",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "cod_esfera",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "int64",
-            "formatString": "0",
-            "lineageTag": "a47eceab-c801-4bbd-9e2c-a77f26252cd8",
-            "sourceColumn": "cod_esfera",
-            "summarizeBy": "none"
-          }
-        ],
-        "lineageTag": "43106225-dbdb-4922-911b-d815d9929ce6",
-        "partitions": [
-          {
-            "name": "Dim_esfera",
-            "mode": "import",
-            "source": {
-              "expression": [
-                "let",
-                "    Fonte = amostra_evg,",
-                "    #\"Outras Colunas Removidas\" = Table.SelectColumns(Fonte,{\"esfera\"}),",
-                "    #\"Duplicatas Removidas\" = Table.Distinct(#\"Outras Colunas Removidas\"),",
-                "    #\"Linhas Filtradas\" = Table.SelectRows(#\"Duplicatas Removidas\", each ([esfera] <> \"\")),",
-                "    #\"Índice Adicionado\" = Table.AddIndexColumn(#\"Linhas Filtradas\", \"Índice\", 0, 1, Int64.Type),",
-                "    #\"Colunas Renomeadas\" = Table.RenameColumns(#\"Índice Adicionado\",{{\"Índice\", \"cod_esfera\"}})",
-                "in",
-                "    #\"Colunas Renomeadas\""
-              ],
-              "type": "m"
-            }
-          }
-        ]
-      },
-      {
-        "name": "Dim_localidade",
-        "annotations": [
-          {
-            "name": "PBI_NavigationStepName",
-            "value": "Navegação"
-          },
-          {
-            "name": "PBI_ResultType",
-            "value": "Table"
-          }
-        ],
-        "columns": [
-          {
-            "name": "municipio_pessoa",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "0b584c52-e310-49f2-9f8d-38553646134a",
-            "sourceColumn": "municipio_pessoa",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "uf_pessoa",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "string",
-            "lineageTag": "82828666-c38e-42a6-b07d-4ad082f8efef",
-            "sourceColumn": "uf_pessoa",
-            "summarizeBy": "none"
-          },
-          {
-            "name": "Cod_localidade",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "int64",
-            "formatString": "0",
-            "lineageTag": "9fd6c6f3-5308-4aa8-aa48-6d857d47c2d7",
-            "sourceColumn": "Cod_localidade",
-            "summarizeBy": "none"
-          }
-        ],
-        "lineageTag": "f3b29435-e216-4e92-bd51-e48c39b57b84",
-        "partitions": [
-          {
-            "name": "Dim_localidade",
-            "mode": "import",
-            "source": {
-              "expression": [
-                "let",
-                "    Fonte = amostra_evg,",
-                "    #\"Outras Colunas Removidas\" = Table.SelectColumns(Fonte,{\"municipio_pessoa\", \"uf_pessoa\"}),",
-                "    #\"Linhas Filtradas\" = Table.SelectRows(#\"Outras Colunas Removidas\", each ([municipio_pessoa] <> \"\")),",
-                "    #\"Duplicatas Removidas\" = Table.Distinct(#\"Linhas Filtradas\", {\"municipio_pessoa\"}),",
-                "    #\"Índice Adicionado\" = Table.AddIndexColumn(#\"Duplicatas Removidas\", \"Índice\", 0, 1, Int64.Type),",
-                "    #\"Colunas Renomeadas\" = Table.RenameColumns(#\"Índice Adicionado\",{{\"Índice\", \"Cod_localidade\"}})",
-                "in",
-                "    #\"Colunas Renomeadas\""
               ],
               "type": "m"
             }
@@ -2128,7 +1948,7 @@
             "formatString": "0",
             "lineageTag": "fd9bc34d-f5e2-415c-89de-885fdbe58f81",
             "sourceColumn": "cod_curso",
-            "summarizeBy": "sum"
+            "summarizeBy": "none"
           },
           {
             "name": "dt_fim",
@@ -2146,18 +1966,7 @@
             "formatString": "Long Date",
             "lineageTag": "52160bc5-086c-4e1d-a16b-d9c9642af524",
             "sourceColumn": "dt_fim",
-            "summarizeBy": "none",
-            "variations": [
-              {
-                "name": "Variation",
-                "defaultHierarchy": {
-                  "hierarchy": "Hierarquia de datas",
-                  "table": "LocalDateTable_b3816c51-0a65-40e0-a5c6-5dc2be8a9148"
-                },
-                "isDefault": true,
-                "relationship": "a7e73bcb-0777-43e0-9805-e3fd9cbeed60"
-              }
-            ]
+            "summarizeBy": "none"
           },
           {
             "name": "sit_matricula",
@@ -2186,45 +1995,54 @@
             "summarizeBy": "none"
           },
           {
-            "name": "cod_poder",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ],
-            "dataType": "int64",
-            "formatString": "0",
-            "lineageTag": "3c200b12-376c-4d19-8fbf-35298ca24283",
-            "sourceColumn": "cod_poder",
-            "summarizeBy": "none"
-          },
-          {
             "name": "Cod_localidade",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
               }
             ],
-            "dataType": "int64",
-            "formatString": "0",
-            "lineageTag": "3e7e24fd-77d0-47ef-a906-d3befacde02c",
+            "dataType": "double",
+            "lineageTag": "9f34118c-fab9-43ae-ae8a-c39833df756a",
             "sourceColumn": "Cod_localidade",
             "summarizeBy": "none"
           },
           {
-            "name": "cod_esfera",
+            "name": "Cod_poder",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
               }
             ],
-            "dataType": "int64",
-            "formatString": "0",
-            "lineageTag": "26d3f489-f442-4e52-b82c-fd4215bf7456",
-            "sourceColumn": "cod_esfera",
+            "dataType": "double",
+            "lineageTag": "d62bbe0a-c0be-4c5c-88cc-bcb467e66792",
+            "sourceColumn": "Cod_poder",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Cod_esfera",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "4f7098c8-a7a8-453f-8886-868360a5a600",
+            "sourceColumn": "Cod_esfera",
             "summarizeBy": "none"
           }
         ],
@@ -2237,18 +2055,16 @@
               "expression": [
                 "let",
                 "    Fonte = amostra_evg,",
-                "    #\"Outras Colunas Removidas\" = Table.SelectColumns(Fonte,{\"cod_matricula\", \"dt_matricula\", \"cod_turma\", \"cod_curso\", \"dt_fim\", \"sit_matricula\", \"codigo_pessoa\"}),",
-                "    #\"Índice Adicionado\" = Table.AddIndexColumn(#\"Outras Colunas Removidas\", \"Índice\", 0, 1, Int64.Type),",
-                "    #\"Índice Adicionado1\" = Table.AddIndexColumn(#\"Índice Adicionado\", \"Índice.1\", 30, 3, Int64.Type),",
-                "    #\"Consultas Mescladas\" = Table.NestedJoin(#\"Índice Adicionado1\", {\"Índice.1\"}, Dim_poder, {\"cod_poder\"}, \"Dim_poder\", JoinKind.LeftOuter),",
-                "    #\"Dim_poder Expandido\" = Table.ExpandTableColumn(#\"Consultas Mescladas\", \"Dim_poder\", {\"cod_poder\"}, {\"cod_poder\"}),",
-                "    #\"Consultas Mescladas1\" = Table.NestedJoin(#\"Dim_poder Expandido\", {\"Índice\"}, Dim_localidade, {\"Cod_localidade\"}, \"Dim_localidade\", JoinKind.LeftOuter),",
-                "    #\"Consultas Mescladas2\" = Table.NestedJoin(#\"Consultas Mescladas1\", {\"Índice\"}, Dim_esfera, {\"cod_esfera\"}, \"Dim_esfera\", JoinKind.LeftOuter),",
-                "    #\"Dim_localidade Expandido\" = Table.ExpandTableColumn(#\"Consultas Mescladas2\", \"Dim_localidade\", {\"Cod_localidade\"}, {\"Cod_localidade\"}),",
-                "    #\"Dim_esfera Expandido\" = Table.ExpandTableColumn(#\"Dim_localidade Expandido\", \"Dim_esfera\", {\"cod_esfera\"}, {\"cod_esfera\"}),",
-                "    #\"Colunas Removidas\" = Table.RemoveColumns(#\"Dim_esfera Expandido\",{\"Índice\", \"Índice.1\"})",
+                "    #\"Colunas Removidas\" = Table.RemoveColumns(Fonte,{\"municipio_pessoa\"}),",
+                "    Personalizar1 = Table.AddColumn(#\"Colunas Removidas\", \"Personalizar\", each if [uf_pessoa] = \"DF\" then 1 else if [uf_pessoa] = \"GO\" then 2 else if [uf_pessoa] = \"SP\" then 3 else if [uf_pessoa] = \"PR\" then 4 else if [uf_pessoa] = \"PE\" then 5 else if [uf_pessoa] = \"PA\" then 6 else if [uf_pessoa] = \"MS\" then 7 else if [uf_pessoa] = \"RO\" then 8 else if [uf_pessoa] = \"MG\" then 9 else if [uf_pessoa] = \"AL\" then 11 else if [uf_pessoa] = \"SC\" then 12 else if [uf_pessoa] = \"PB\" then 13 else if [uf_pessoa] = \"MT\" then 14 else if [uf_pessoa] = \"TO\" then 15 else if [uf_pessoa] = \"BA\" then 16 else if [uf_pessoa] = \"RJ\" then 17 else if [uf_pessoa] = \"RN\" then 18 else if [uf_pessoa] = \"RR\" then 19 else if [uf_pessoa] = \"RS\" then 20 else if [uf_pessoa] = \"PI\" then 21 else if [uf_pessoa] = \"ES\" then 22 else if [uf_pessoa] = \"CE\" then 23 else if [uf_pessoa] = \"AM\" then 24 else if [uf_pessoa] = \"AP\" then 25 else if [uf_pessoa] = \"AC\" then 26 else if [uf_pessoa] = \"SE\" then 27 else if [uf_pessoa] = \"MA\" then 28 else null, type number),",
+                "    #\"Coluna Condicional Adicionada\" = Table.AddColumn(Personalizar1, \"Personalizar.1\", each if [poder] = \"Executivo\" then 1 else if [poder] = \"Judiciario\" then 2 else if [poder] = \"Legislativo\" then 3 else null, type number),",
+                "    #\"Colunas Renomeadas\" = Table.RenameColumns(#\"Coluna Condicional Adicionada\",{{\"Personalizar\", \"Cod_localidade\"}, {\"Personalizar.1\", \"Cod_poder\"}}),",
+                "    #\"Coluna Condicional Adicionada1\" = Table.AddColumn(#\"Colunas Renomeadas\", \"Personalizar\", each if [esfera] = \"Estadual\" then 0 else if [esfera] = \"Municipal\" then 1 else if [esfera] = \"Federal\" then 2 else null, type number),",
+                "    #\"Colunas Renomeadas1\" = Table.RenameColumns(#\"Coluna Condicional Adicionada1\",{{\"Personalizar\", \"Cod_esfera\"}}),",
+                "    #\"Colunas Reordenadas\" = Table.ReorderColumns(#\"Colunas Renomeadas1\",{\"cod_matricula\", \"dt_matricula\", \"cod_turma\", \"cod_curso\", \"dt_fim\", \"sit_matricula\", \"codigo_pessoa\", \"uf_pessoa\", \"poder\", \"esfera\", \"Cod_localidade\", \"Cod_poder\", \"Cod_esfera\"}),",
+                "    #\"Outras Colunas Removidas\" = Table.SelectColumns(#\"Colunas Reordenadas\",{\"cod_matricula\", \"dt_matricula\", \"cod_turma\", \"cod_curso\", \"Cod_esfera\", \"Cod_poder\", \"Cod_localidade\", \"codigo_pessoa\", \"sit_matricula\", \"dt_fim\"})",
                 "in",
-                "    #\"Colunas Removidas\""
+                "    #\"Outras Colunas Removidas\""
               ],
               "type": "m"
             }
@@ -2462,210 +2278,225 @@
         "showAsVariationsOnly": true
       },
       {
-        "name": "LocalDateTable_b3816c51-0a65-40e0-a5c6-5dc2be8a9148",
+        "name": "Dim_poder",
         "annotations": [
           {
-            "name": "__PBI_LocalDateTable",
-            "value": "true"
+            "name": "PBI_NavigationStepName",
+            "value": "Navegação"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
           }
         ],
         "columns": [
           {
-            "name": "Date",
+            "name": "poder",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
-                "value": "User"
+                "value": "Automatic"
               }
             ],
-            "dataCategory": "PaddedDateTableDates",
-            "dataType": "dateTime",
-            "formatString": "General Date",
-            "isHidden": true,
-            "isNameInferred": true,
-            "lineageTag": "119608fa-49b4-4ffe-9b9d-ed2c1088ce6b",
-            "sourceColumn": "[Date]",
-            "summarizeBy": "none",
-            "type": "calculatedTableColumn"
-          },
-          {
-            "name": "Ano",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "User"
-              },
-              {
-                "name": "TemplateId",
-                "value": "Year"
-              }
-            ],
-            "dataCategory": "Years",
-            "dataType": "int64",
-            "expression": "YEAR([Date])",
-            "formatString": "0",
-            "isHidden": true,
-            "lineageTag": "47b1eee3-fab0-4c37-b865-24d024d3c348",
-            "summarizeBy": "none",
-            "type": "calculated"
-          },
-          {
-            "name": "MonthNo",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "User"
-              },
-              {
-                "name": "TemplateId",
-                "value": "MonthNumber"
-              }
-            ],
-            "dataCategory": "MonthOfYear",
-            "dataType": "int64",
-            "expression": "MONTH([Date])",
-            "formatString": "0",
-            "isHidden": true,
-            "lineageTag": "42a27f29-a345-44e2-9d1d-28199184726a",
-            "summarizeBy": "none",
-            "type": "calculated"
-          },
-          {
-            "name": "Mês",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "User"
-              },
-              {
-                "name": "TemplateId",
-                "value": "Month"
-              }
-            ],
-            "dataCategory": "Months",
             "dataType": "string",
-            "expression": "FORMAT([Date], \"MMMM\")",
-            "isHidden": true,
-            "lineageTag": "77025128-e910-48b5-bc9b-e85663b8c45c",
-            "sortByColumn": "MonthNo",
-            "summarizeBy": "none",
-            "type": "calculated"
+            "lineageTag": "1245a071-b1e7-4d8e-898d-55c3de43f630",
+            "sourceColumn": "poder",
+            "summarizeBy": "none"
           },
           {
-            "name": "QuarterNo",
+            "name": "Cod_poder",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
-                "value": "User"
+                "value": "Automatic"
               },
               {
-                "name": "TemplateId",
-                "value": "QuarterNumber"
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
               }
             ],
-            "dataCategory": "QuarterOfYear",
-            "dataType": "int64",
-            "expression": "INT(([MonthNo] + 2) / 3)",
-            "formatString": "0",
-            "isHidden": true,
-            "lineageTag": "40a7707c-0137-4501-a2c1-d19742ad645a",
-            "summarizeBy": "none",
-            "type": "calculated"
-          },
-          {
-            "name": "Trimestre",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "User"
-              },
-              {
-                "name": "TemplateId",
-                "value": "Quarter"
-              }
-            ],
-            "dataCategory": "Quarters",
-            "dataType": "string",
-            "expression": "\"Trim \" & [QuarterNo]",
-            "isHidden": true,
-            "lineageTag": "a14974fe-e2ab-4e83-84af-428894d038ad",
-            "sortByColumn": "QuarterNo",
-            "summarizeBy": "none",
-            "type": "calculated"
-          },
-          {
-            "name": "Dia",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "User"
-              },
-              {
-                "name": "TemplateId",
-                "value": "Day"
-              }
-            ],
-            "dataCategory": "DayOfMonth",
-            "dataType": "int64",
-            "expression": "DAY([Date])",
-            "formatString": "0",
-            "isHidden": true,
-            "lineageTag": "a87b63ba-886b-4c3e-9c55-185edce524c7",
-            "summarizeBy": "none",
-            "type": "calculated"
+            "dataType": "double",
+            "lineageTag": "2d491feb-7c18-46ff-b1d6-a928352e3be4",
+            "sourceColumn": "Cod_poder",
+            "summarizeBy": "none"
           }
         ],
-        "hierarchies": [
-          {
-            "name": "Hierarquia de datas",
-            "annotations": [
-              {
-                "name": "TemplateId",
-                "value": "DateHierarchy"
-              }
-            ],
-            "levels": [
-              {
-                "name": "Ano",
-                "column": "Ano",
-                "lineageTag": "56ded72e-5181-4fc1-9cd8-b02adb5026bb",
-                "ordinal": 0
-              },
-              {
-                "name": "Trimestre",
-                "column": "Trimestre",
-                "lineageTag": "94a68bfd-9123-4037-a3a9-b446bddb09cb",
-                "ordinal": 1
-              },
-              {
-                "name": "Mês",
-                "column": "Mês",
-                "lineageTag": "0221fb3a-2f6b-41f6-adb7-162d3c600e7f",
-                "ordinal": 2
-              },
-              {
-                "name": "Dia",
-                "column": "Dia",
-                "lineageTag": "1eae1f89-eeb3-4207-8b71-07de5a675d90",
-                "ordinal": 3
-              }
-            ],
-            "lineageTag": "f21653f0-1b1a-4b97-801c-67d2f9c99539"
-          }
-        ],
-        "isHidden": true,
-        "lineageTag": "a617254b-d3c5-43af-a52b-48fb4e2374cc",
+        "lineageTag": "5220de5b-88d4-430b-9aa2-3baefd718720",
         "partitions": [
           {
-            "name": "LocalDateTable_b3816c51-0a65-40e0-a5c6-5dc2be8a9148",
+            "name": "Dim_poder",
             "mode": "import",
             "source": {
-              "expression": "Calendar(Date(Year(MIN('F_matricula'[dt_fim])), 1, 1), Date(Year(MAX('F_matricula'[dt_fim])), 12, 31))",
-              "type": "calculated"
+              "expression": [
+                "let",
+                "    Fonte = Csv.Document(File.Contents(\"C:\\Users\\matheushenriquesda\\Downloads\\amostra_evg.csv\"),[Delimiter=\",\", Columns=25, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Cabeçalhos Promovidos\" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),",
+                "    #\"Tipo Alterado\" = Table.TransformColumnTypes(#\"Cabeçalhos Promovidos\",{{\"cod_matricula\", type text}, {\"dt_matricula\", type datetime}, {\"nacionalidade\", type text}, {\"cod_turma\", Int64.Type}, {\"nome_turma\", type text}, {\"modalidade_turma\", type text}, {\"cod_curso\", Int64.Type}, {\"nome_curso\", type text}, {\"carga_horaria\", Int64.Type}, {\"dt_fim\", type datetime}, {\"sit_turma\", type text}, {\"instituicao\", type text}, {\"municipio_pessoa\", type text}, {\"uf_pessoa\", type text}, {\"conteudista\", type text}, {\"tematica\", type text}, {\"codigo_pessoa\", type text}, {\"sexo\", type text}, {\"idade\", Int64.Type}, {\"sit_matricula\", type text}, {\"poder\", type text}, {\"esfera\", type text}, {\"email_pessoa\", type text}, {\"telefone_pessoa\", Int64.Type}, {\"email_conteudista\", type text}}),",
+                "    #\"Data Extraída1\" = Table.TransformColumns(#\"Tipo Alterado\",{{\"dt_matricula\", DateTime.Date, type date}}),",
+                "    #\"Data Extraída\" = Table.TransformColumns(#\"Data Extraída1\",{{\"dt_matricula\", DateTime.Date, type date}, {\"dt_fim\", DateTime.Date, type date}}),",
+                "    #\"Outras Colunas Removidas\" = Table.SelectColumns(#\"Data Extraída\",{\"poder\"}),",
+                "    #\"Índice Adicionado\" = Table.AddIndexColumn(#\"Outras Colunas Removidas\", \"Índice\", 0, 1, Int64.Type),",
+                "    #\"Colunas Removidas\" = Table.RemoveColumns(#\"Índice Adicionado\",{\"Índice\"}),",
+                "    #\"Coluna Condicional Adicionada\" = Table.AddColumn(#\"Colunas Removidas\", \"Personalizar\", each if [poder] = \"Executivo\" then 1 else if [poder] = \"Judiciario\" then 2 else if [poder] = \"Legislativo\" then 3 else null, type number),",
+                "    #\"Linhas Filtradas\" = Table.SelectRows(#\"Coluna Condicional Adicionada\", each true),",
+                "    #\"Colunas Removidas1\" = Table.RemoveColumns(#\"Linhas Filtradas\",{\"Personalizar\"}),",
+                "    #\"Coluna Condicional Adicionada1\" = Table.AddColumn(#\"Colunas Removidas1\", \"Personalizar\", each if [poder] = \"Executivo\" then 30 else if [poder] = \"Judiciario\" then 33 else if [poder] = \"Legislativo\" then 36 else null, type number),",
+                "    #\"Colunas Renomeadas\" = Table.RenameColumns(#\"Coluna Condicional Adicionada1\",{{\"Personalizar\", \"Cod_poder\"}})",
+                "in",
+                "    #\"Colunas Renomeadas\""
+              ],
+              "type": "m"
             }
           }
+        ]
+      },
+      {
+        "name": "Dim_localidade",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navegação"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
         ],
-        "showAsVariationsOnly": true
+        "columns": [
+          {
+            "name": "municipio_pessoa",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "b4001e15-4c20-40fc-9e3d-b66e94a65e40",
+            "sourceColumn": "municipio_pessoa",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "uf_pessoa",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "22ac16d7-455d-45ac-9393-e644f2d21b0b",
+            "sourceColumn": "uf_pessoa",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Cod_localidade",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "55e06a7d-246d-4bd4-8312-5fc566250b67",
+            "sourceColumn": "Cod_localidade",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "78424813-0900-4072-b985-08480df60dfa",
+        "partitions": [
+          {
+            "name": "Dim_localidade",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Fonte = Csv.Document(File.Contents(\"C:\\Users\\matheushenriquesda\\Downloads\\amostra_evg.csv\"),[Delimiter=\",\", Columns=25, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Cabeçalhos Promovidos\" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),",
+                "    #\"Tipo Alterado\" = Table.TransformColumnTypes(#\"Cabeçalhos Promovidos\",{{\"cod_matricula\", type text}, {\"dt_matricula\", type datetime}, {\"nacionalidade\", type text}, {\"cod_turma\", Int64.Type}, {\"nome_turma\", type text}, {\"modalidade_turma\", type text}, {\"cod_curso\", Int64.Type}, {\"nome_curso\", type text}, {\"carga_horaria\", Int64.Type}, {\"dt_fim\", type datetime}, {\"sit_turma\", type text}, {\"instituicao\", type text}, {\"municipio_pessoa\", type text}, {\"uf_pessoa\", type text}, {\"conteudista\", type text}, {\"tematica\", type text}, {\"codigo_pessoa\", type text}, {\"sexo\", type text}, {\"idade\", Int64.Type}, {\"sit_matricula\", type text}, {\"poder\", type text}, {\"esfera\", type text}, {\"email_pessoa\", type text}, {\"telefone_pessoa\", Int64.Type}, {\"email_conteudista\", type text}}),",
+                "    #\"Data Extraída1\" = Table.TransformColumns(#\"Tipo Alterado\",{{\"dt_matricula\", DateTime.Date, type date}}),",
+                "    #\"Data Extraída\" = Table.TransformColumns(#\"Data Extraída1\",{{\"dt_matricula\", DateTime.Date, type date}, {\"dt_fim\", DateTime.Date, type date}}),",
+                "    #\"Outras Colunas Removidas\" = Table.SelectColumns(#\"Data Extraída\",{\"municipio_pessoa\", \"uf_pessoa\"}),",
+                "    #\"Coluna Condicional Adicionada\" = Table.AddColumn(#\"Outras Colunas Removidas\", \"Personalizar\", each if [uf_pessoa] = \"DF\" then 1 else if [uf_pessoa] = \"GO\" then 2 else if [uf_pessoa] = \"SP\" then 3 else if [uf_pessoa] = \"PR\" then 4 else if [uf_pessoa] = \"PE\" then 5 else if [uf_pessoa] = \"PA\" then 6 else if [uf_pessoa] = \"MS\" then 7 else if [uf_pessoa] = \"RO\" then 8 else if [uf_pessoa] = \"MG\" then 9 else if [uf_pessoa] = \"AL\" then 11 else if [uf_pessoa] = \"SC\" then 12 else if [uf_pessoa] = \"PB\" then 13 else if [uf_pessoa] = \"MT\" then 14 else if [uf_pessoa] = \"TO\" then 15 else if [uf_pessoa] = \"BA\" then 16 else if [uf_pessoa] = \"RJ\" then 17 else if [uf_pessoa] = \"RN\" then 18 else if [uf_pessoa] = \"RR\" then 19 else if [uf_pessoa] = \"RS\" then 20 else if [uf_pessoa] = \"PI\" then 21 else if [uf_pessoa] = \"ES\" then 22 else if [uf_pessoa] = \"CE\" then 23 else if [uf_pessoa] = \"AM\" then 24 else if [uf_pessoa] = \"AP\" then 25 else if [uf_pessoa] = \"AC\" then 26 else if [uf_pessoa] = \"SE\" then 27 else if [uf_pessoa] = \"MA\" then 28 else null, type number),",
+                "    #\"Colunas Renomeadas\" = Table.RenameColumns(#\"Coluna Condicional Adicionada\",{{\"Personalizar\", \"cod_loc\"}}),",
+                "    #\"Tipo Alterado1\" = Table.TransformColumnTypes(#\"Colunas Renomeadas\",{{\"cod_loc\", type text}}),",
+                "    #\"Colunas Renomeadas1\" = Table.RenameColumns(#\"Tipo Alterado1\",{{\"cod_loc\", \"Cod_localidade\"}})",
+                "in",
+                "    #\"Colunas Renomeadas1\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim_esfera",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navegação"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "esfera",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "d6551c41-f47a-4d25-9453-fccc6dfe0950",
+            "sourceColumn": "esfera",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Cod_esfera",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "85ea3724-3178-4dc7-a855-2ffe1fa99a41",
+            "sourceColumn": "Cod_esfera",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "aaf6755b-093a-473f-92c7-5effe5a62738",
+        "partitions": [
+          {
+            "name": "Dim_esfera",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Fonte = Csv.Document(File.Contents(\"C:\\Users\\matheushenriquesda\\Downloads\\amostra_evg.csv\"),[Delimiter=\",\", Columns=25, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Cabeçalhos Promovidos\" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),",
+                "    #\"Tipo Alterado\" = Table.TransformColumnTypes(#\"Cabeçalhos Promovidos\",{{\"cod_matricula\", type text}, {\"dt_matricula\", type datetime}, {\"nacionalidade\", type text}, {\"cod_turma\", Int64.Type}, {\"nome_turma\", type text}, {\"modalidade_turma\", type text}, {\"cod_curso\", Int64.Type}, {\"nome_curso\", type text}, {\"carga_horaria\", Int64.Type}, {\"dt_fim\", type datetime}, {\"sit_turma\", type text}, {\"instituicao\", type text}, {\"municipio_pessoa\", type text}, {\"uf_pessoa\", type text}, {\"conteudista\", type text}, {\"tematica\", type text}, {\"codigo_pessoa\", type text}, {\"sexo\", type text}, {\"idade\", Int64.Type}, {\"sit_matricula\", type text}, {\"poder\", type text}, {\"esfera\", type text}, {\"email_pessoa\", type text}, {\"telefone_pessoa\", Int64.Type}, {\"email_conteudista\", type text}}),",
+                "    #\"Data Extraída1\" = Table.TransformColumns(#\"Tipo Alterado\",{{\"dt_matricula\", DateTime.Date, type date}}),",
+                "    #\"Data Extraída\" = Table.TransformColumns(#\"Data Extraída1\",{{\"dt_matricula\", DateTime.Date, type date}, {\"dt_fim\", DateTime.Date, type date}}),",
+                "    #\"Outras Colunas Removidas\" = Table.SelectColumns(#\"Data Extraída\",{\"esfera\"}),",
+                "    #\"Coluna Condicional Adicionada\" = Table.AddColumn(#\"Outras Colunas Removidas\", \"Personalizar\", each if [esfera] = \"Estadual\" then 0 else if [esfera] = \"Municipal\" then 1 else if [esfera] = \"Federal\" then 2 else null, type number),",
+                "    #\"Colunas Renomeadas\" = Table.RenameColumns(#\"Coluna Condicional Adicionada\",{{\"Personalizar\", \"Cod_esf\"}}),",
+                "    #\"Colunas Renomeadas1\" = Table.RenameColumns(#\"Colunas Renomeadas\",{{\"Cod_esf\", \"Cod_esfera\"}})",
+                "in",
+                "    #\"Colunas Renomeadas1\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
       }
     ]
   }
